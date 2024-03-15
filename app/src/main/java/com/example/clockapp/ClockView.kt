@@ -20,6 +20,7 @@ class ClockView(context: Context, attributeSet: AttributeSet) : View(context, at
     private val hourHandPaint: Paint = Paint()
     private val minuteHandPaint: Paint = Paint()
     private val secondHandPaint: Paint = Paint()
+    private val pointsPaint: Paint = Paint()
 
     private var textSize: Float = 0f
     private var radius: Float = 0f
@@ -35,31 +36,36 @@ class ClockView(context: Context, attributeSet: AttributeSet) : View(context, at
     private var secondHandAngle: Double = 0.0
 
     init {
-        circleFramePaint.color = Color.BLUE
-        circleMainPaint.color = Color.GREEN
+        circleFramePaint.color = Color.DKGRAY
+        circleMainPaint.color = Color.LTGRAY
         circleCenterPaint.color = Color.RED
+
         textPaint.color = Color.BLACK
-        textPaint.textSize = 70f
         textPaint.textAlign = Paint.Align.CENTER
         textPaint.typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD)
 
         hourHandPaint.color = Color.BLACK
-        hourHandPaint.strokeWidth = 10f
+        hourHandPaint.strokeWidth = 20f
         hourHandPaint.strokeCap = Paint.Cap.ROUND
 
-        minuteHandPaint.color = Color.BLACK
-        minuteHandPaint.strokeWidth = 6f
+        minuteHandPaint.color = Color.MAGENTA
+        minuteHandPaint.strokeWidth = 13f
         minuteHandPaint.strokeCap = Paint.Cap.ROUND
 
         secondHandPaint.color = Color.RED
-        secondHandPaint.strokeWidth = 3f
+        secondHandPaint.strokeWidth = 8f
         secondHandPaint.strokeCap = Paint.Cap.ROUND
+
+        pointsPaint.color = Color.BLACK
+        pointsPaint.strokeWidth = 5f
+        pointsPaint.style = Paint.Style.FILL
+        pointsPaint.isAntiAlias = true
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
 
-        textSize = (w.coerceAtMost(h) / 10).toFloat()
+        textSize = (w.coerceAtMost(h) / 8).toFloat()
         textPaint.textSize = textSize
 
         centerX = w / 2f
@@ -85,6 +91,7 @@ class ClockView(context: Context, attributeSet: AttributeSet) : View(context, at
 
         val radius = width.coerceAtMost(height) / 2
 
+
         canvas.drawCircle(
             (width / 2).toFloat(),
             (height / 2).toFloat(),
@@ -108,7 +115,7 @@ class ClockView(context: Context, attributeSet: AttributeSet) : View(context, at
             centerX, centerY,
             (centerX + hourHandLength * sin(hourHandAngle)).toFloat(),
             (centerY - hourHandLength * cos(hourHandAngle)).toFloat(),
-            minuteHandPaint
+            hourHandPaint
         )
         canvas.drawLine(
             centerX, centerY,
@@ -120,17 +127,29 @@ class ClockView(context: Context, attributeSet: AttributeSet) : View(context, at
             centerX, centerY,
             (centerX + secondHandLength * sin(secondHandAngle)).toFloat(),
             (centerY - secondHandLength * cos(secondHandAngle)).toFloat(),
-            minuteHandPaint
+            secondHandPaint
         )
 
         val centerX = width / 2
         val centerY = height / 2
 
-        val angleStep = 2 * Math.PI / 12
 
-        val textRadius = radius - (radius / 5)
+        val radiusOfPoints = width.coerceAtMost(height) / 2.3
+        val textRadius = radius - (radius / 3)
+
+        for (i in 0 until 60) {
+            val angleStep = 2 * Math.PI / 60
+            val angle = i * angleStep
+
+            val x = (centerX + radiusOfPoints * cos(angle)).toFloat()
+            val y = (centerY + radiusOfPoints * sin(angle)).toFloat()
+
+            val pointRadius = if (i % 5 == 0) 7f else 5f
+            canvas.drawCircle(x, y, pointRadius, pointsPaint)
+        }
 
         for (i in 1..12) {
+            val angleStep = 2 * Math.PI / 12
             val angle = i * angleStep - Math.PI / 2
             val x = (centerX + textRadius * cos(angle)).toFloat()
             val y = (centerY + textRadius * sin(angle)).toFloat()
