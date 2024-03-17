@@ -111,6 +111,31 @@ class ClockView(context: Context, attributeSet: AttributeSet) : View(context, at
             circleCenterPaint
         )
 
+        val radiusOfPoints = width.coerceAtMost(height) / 2.3
+        val textRadius = radius - (radius / 3)
+
+        for (i in 1..12) {
+            val angleStep = 2 * Math.PI / 12
+            val angle = i * angleStep - Math.PI / 2
+            val x = (centerX + textRadius * cos(angle)).toFloat()
+            val y = (centerY + textRadius * sin(angle)).toFloat()
+
+            val textHeight = textPaint.descent() - textPaint.ascent()
+
+            canvas.drawText(i.toString(), x, y - textHeight / 2 - textPaint.ascent(), textPaint)
+        }
+
+        for (i in 0 until 60) {
+            val angleStep = 2 * Math.PI / 60
+            val angle = i * angleStep
+
+            val x = (centerX + radiusOfPoints * cos(angle)).toFloat()
+            val y = (centerY + radiusOfPoints * sin(angle)).toFloat()
+
+            val pointRadius = if (i % 5 == 0) 7f else 5f
+            canvas.drawCircle(x, y, pointRadius, pointsPaint)
+        }
+
         canvas.drawLine(
             centerX, centerY,
             (centerX + hourHandLength * sin(hourHandAngle)).toFloat(),
@@ -129,35 +154,6 @@ class ClockView(context: Context, attributeSet: AttributeSet) : View(context, at
             (centerY - secondHandLength * cos(secondHandAngle)).toFloat(),
             secondHandPaint
         )
-
-        val centerX = width / 2
-        val centerY = height / 2
-
-
-        val radiusOfPoints = width.coerceAtMost(height) / 2.3
-        val textRadius = radius - (radius / 3)
-
-        for (i in 0 until 60) {
-            val angleStep = 2 * Math.PI / 60
-            val angle = i * angleStep
-
-            val x = (centerX + radiusOfPoints * cos(angle)).toFloat()
-            val y = (centerY + radiusOfPoints * sin(angle)).toFloat()
-
-            val pointRadius = if (i % 5 == 0) 7f else 5f
-            canvas.drawCircle(x, y, pointRadius, pointsPaint)
-        }
-
-        for (i in 1..12) {
-            val angleStep = 2 * Math.PI / 12
-            val angle = i * angleStep - Math.PI / 2
-            val x = (centerX + textRadius * cos(angle)).toFloat()
-            val y = (centerY + textRadius * sin(angle)).toFloat()
-
-            val textHeight = textPaint.descent() - textPaint.ascent()
-
-            canvas.drawText(i.toString(), x, y - textHeight / 2 - textPaint.ascent(), textPaint)
-        }
 
         postInvalidateDelayed(1000)
     }
