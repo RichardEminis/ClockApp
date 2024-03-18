@@ -24,7 +24,6 @@ class MainActivity : AppCompatActivity() {
         fragmentManager.commit {
             setReorderingAllowed(true)
             add<MainFragment>(R.id.mainContainer)
-            addToBackStack(null)
         }
     }
 }

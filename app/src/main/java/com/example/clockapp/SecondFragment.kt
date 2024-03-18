@@ -6,14 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import com.example.clockapp.databinding.FragmentMainBinding
 import com.example.clockapp.databinding.FragmentSecondBinding
 
 
-class MainFragment : Fragment() {
+class SecondFragment : Fragment() {
 
-    private val binding: FragmentMainBinding by lazy {
-        FragmentMainBinding.inflate(layoutInflater)
+    private val binding: FragmentSecondBinding by lazy {
+        FragmentSecondBinding.inflate(layoutInflater)
     }
 
     override fun onCreateView(
@@ -26,12 +25,11 @@ class MainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val secondFragmentButton = view.findViewById<Button>(R.id.btnNewFragment)
+        val backButton = view.findViewById<Button>(R.id.btnBack)
 
-        secondFragmentButton.setOnClickListener {
-            requireActivity().supportFragmentManager.beginTransaction()
-                .replace(R.id.mainContainer, SecondFragment())
-                .commit()
+        backButton.setOnClickListener {
+            requireActivity().onBackPressedDispatcher.onBackPressed()
         }
     }
 }
+

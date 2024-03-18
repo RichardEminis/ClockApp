@@ -91,7 +91,6 @@ class ClockView(context: Context, attributeSet: AttributeSet) : View(context, at
 
         val radius = width.coerceAtMost(height) / 2
 
-
         canvas.drawCircle(
             (width / 2).toFloat(),
             (height / 2).toFloat(),
