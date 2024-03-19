@@ -42,7 +42,8 @@
                     app:layout_constraintBottom_toTopOf="@+id/btnNewFragment"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/clockView1" />
+                    app:layout_constraintTop_toBottomOf="@+id/clockView1"
+                    style="@style/ButtonsStyle"/>
 
                 <Button
                     android:id="@+id/btnChangeSecondHandColor"
@@ -52,7 +53,8 @@
                     app:layout_constraintBottom_toTopOf="@+id/btnNewFragment"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/clockView1" />
+                    app:layout_constraintTop_toBottomOf="@+id/clockView1"
+                    style="@style/ButtonsStyle"/>
 
                 <Button
                     android:id="@+id/btnChangeCircleFrameColor"
@@ -62,7 +64,8 @@
                     app:layout_constraintBottom_toTopOf="@+id/btnNewFragment"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/clockView1" />
+                    app:layout_constraintTop_toBottomOf="@+id/clockView1"
+                    style="@style/ButtonsStyle"/>
 
             </LinearLayout>
 
