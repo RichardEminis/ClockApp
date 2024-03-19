@@ -13,7 +13,7 @@ import java.util.Calendar
 import java.util.TimeZone
 
 
-class MainFragment(private val timeZone: String) : Fragment()  {
+class MainFragment() : Fragment() {
 
     private val binding: FragmentMainBinding by lazy {
         FragmentMainBinding.inflate(layoutInflater)
@@ -29,13 +29,15 @@ class MainFragment(private val timeZone: String) : Fragment()  {
         val rootView = inflater.inflate(R.layout.fragment_main, container, false)
 
         clockView1 = rootView.findViewById(R.id.clockView1)
-        updateTime()
 
         return rootView
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        arguments?.getString(TIME_ZONE)?.let { timeZone ->
+            updateTime(timeZone)
+        }
         colorChanger()
     }
 
@@ -87,16 +89,13 @@ class MainFragment(private val timeZone: String) : Fragment()  {
         }
     }
 
-    private fun updateTime() {
-        val timeZone = TimeZone.getTimeZone(timeZone)
-        timeZone?.let {
-            val calendar = Calendar.getInstance(it)
-            val hour = calendar.get(Calendar.HOUR_OF_DAY)
-            val minute = calendar.get(Calendar.MINUTE)
-            val second = calendar.get(Calendar.SECOND)
+    private fun updateTime(timeZone: String) {
+        val calendar = Calendar.getInstance(TimeZone.getTimeZone(timeZone))
+        val hour = calendar.get(Calendar.HOUR_OF_DAY)
+        val minute = calendar.get(Calendar.MINUTE)
+        val second = calendar.get(Calendar.SECOND)
 
-            clockView1.setTime(hour, minute, second)
-            clockView1.postInvalidateDelayed(SECOND_DELAY)
-        }
+        clockView1.setTime(hour, minute, second)
+        clockView1.postInvalidateDelayed(SECOND_DELAY)
     }
 }

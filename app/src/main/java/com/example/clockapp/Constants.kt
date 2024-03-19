@@ -27,3 +27,4 @@ const val HOURS_IN_CLOCK = 12
 const val DEGREES_PER_HOUR = 30
 const val MINUTES_IN_HOUR = 60
 const val DEGREES_PER_MINUTE = 6
+const val TIME_ZONE = "timeZone"
