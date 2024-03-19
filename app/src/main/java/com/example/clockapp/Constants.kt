@@ -1,0 +1,29 @@
+package com.example.clockapp
+
+const val MOSCOW_TAB = "Moscow"
+const val GMT_3 = "GMT+3"
+const val UTC_5 = "UTC+5"
+const val GMT_4 = "GMT-4"
+const val GMT = "GMT"
+const val SECOND_DELAY = 1000L
+const val COLOR_PICKER_DIALOG = "color_picker_dialog"
+const val CIRCLE_MAIN_COLOR = "circle_main_color"
+const val SECOND_HAND_COLOR = "second_hand_color"
+const val CIRCLE_FRAME_COLOR = "circle_frame_color"
+const val CLOCK_SETTINGS = "clock_settings"
+const val TEXT_SIZE_RATIO = 8
+const val HOUR_HAND_RATIO = 0.5f
+const val MINUTE_HAND_RATIO = 0.7f
+const val SECOND_HAND_RATIO = 0.8f
+const val FRAME_CIRCLE_RATIO = 15
+const val POINTS_RADIUS_RATIO = 1.1
+const val TEXT_RADIUS_RATIO = 3
+const val HOUR_HAND_WIDTH = 20f
+const val MINUTE_HAND_WIDTH = 13f
+const val SECOND_HAND_WIDTH = 8f
+const val POINTS_RADIUS_SMALL = 5f
+const val POINTS_RADIUS_LARGE = 7f
+const val HOURS_IN_CLOCK = 12
+const val DEGREES_PER_HOUR = 30
+const val MINUTES_IN_HOUR = 60
+const val DEGREES_PER_MINUTE = 6

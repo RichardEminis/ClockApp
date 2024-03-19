@@ -27,6 +27,7 @@ class MainFragment(private val timeZone: String) : Fragment()  {
         savedInstanceState: Bundle?
     ): View {
         val rootView = inflater.inflate(R.layout.fragment_main, container, false)
+
         clockView1 = rootView.findViewById(R.id.clockView1)
         updateTime()
 
@@ -35,17 +36,16 @@ class MainFragment(private val timeZone: String) : Fragment()  {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         colorChanger()
     }
 
     private fun colorChanger() {
         sharedPreferences =
-            requireContext().getSharedPreferences("clock_settings", Context.MODE_PRIVATE)
+            requireContext().getSharedPreferences(CLOCK_SETTINGS, Context.MODE_PRIVATE)
 
-        val circleMainColor = sharedPreferences.getInt("circle_main_color", Color.LTGRAY)
-        val secondHandColor = sharedPreferences.getInt("second_hand_color", Color.RED)
-        val circleFrameColor = sharedPreferences.getInt("circle_frame_color", Color.DKGRAY)
+        val circleMainColor = sharedPreferences.getInt(CIRCLE_MAIN_COLOR, Color.LTGRAY)
+        val secondHandColor = sharedPreferences.getInt(SECOND_HAND_COLOR, Color.RED)
+        val circleFrameColor = sharedPreferences.getInt(CIRCLE_FRAME_COLOR, Color.DKGRAY)
 
         binding.btnChangeCircleMainColor.setBackgroundColor(circleMainColor)
         binding.btnChangeSecondHandColor.setBackgroundColor(secondHandColor)
@@ -61,9 +61,9 @@ class MainFragment(private val timeZone: String) : Fragment()  {
             colorPickerDialog.setOnColorSelectedListener { color ->
                 binding.btnChangeCircleMainColor.setBackgroundColor(color)
                 clockView1.setCircleMainColor(color)
-                sharedPreferences.edit().putInt("circle_main_color", color).apply()
+                sharedPreferences.edit().putInt(CIRCLE_MAIN_COLOR, color).apply()
             }
-            colorPickerDialog.show(parentFragmentManager, "color_picker_dialog")
+            colorPickerDialog.show(parentFragmentManager, COLOR_PICKER_DIALOG)
         }
 
         binding.btnChangeSecondHandColor.setOnClickListener {
@@ -71,9 +71,9 @@ class MainFragment(private val timeZone: String) : Fragment()  {
             colorPickerDialog.setOnColorSelectedListener { color ->
                 binding.btnChangeSecondHandColor.setBackgroundColor(color)
                 clockView1.setSecondHandColor(color)
-                sharedPreferences.edit().putInt("second_hand_color", color).apply()
+                sharedPreferences.edit().putInt(SECOND_HAND_COLOR, color).apply()
             }
-            colorPickerDialog.show(parentFragmentManager, "color_picker_dialog")
+            colorPickerDialog.show(parentFragmentManager, COLOR_PICKER_DIALOG)
         }
 
         binding.btnChangeCircleFrameColor.setOnClickListener {
@@ -81,9 +81,9 @@ class MainFragment(private val timeZone: String) : Fragment()  {
             colorPickerDialog.setOnColorSelectedListener { color ->
                 binding.btnChangeCircleFrameColor.setBackgroundColor(color)
                 clockView1.setCircleFrameColor(color)
-                sharedPreferences.edit().putInt("circle_frame_color", color).apply()
+                sharedPreferences.edit().putInt(CIRCLE_FRAME_COLOR, color).apply()
             }
-            colorPickerDialog.show(parentFragmentManager, "color_picker_dialog")
+            colorPickerDialog.show(parentFragmentManager, COLOR_PICKER_DIALOG)
         }
     }
 
@@ -96,7 +96,7 @@ class MainFragment(private val timeZone: String) : Fragment()  {
             val second = calendar.get(Calendar.SECOND)
 
             clockView1.setTime(hour, minute, second)
-            clockView1.postInvalidateDelayed(1000)
+            clockView1.postInvalidateDelayed(SECOND_DELAY)
         }
     }
 }

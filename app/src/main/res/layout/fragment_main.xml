@@ -18,9 +18,9 @@
 
             <com.example.clockapp.ClockView
                 android:id="@+id/clockView1"
-                android:layout_width="300dp"
-                android:layout_height="300dp"
-                android:layout_marginTop="20dp"
+                android:layout_width="@dimen/clock_view_size"
+                android:layout_height="@dimen/clock_view_size"
+                android:layout_marginTop="@dimen/main_indent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -36,9 +36,9 @@
 
                 <Button
                     android:id="@+id/btnChangeCircleMainColor"
-                    android:layout_width="wrap_content"
+                    android:layout_width="@dimen/buttons_width"
                     android:layout_height="wrap_content"
-                    android:text="BACK COLOR"
+                    android:text="@string/text_background_color"
                     app:layout_constraintBottom_toTopOf="@+id/btnNewFragment"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -46,9 +46,9 @@
 
                 <Button
                     android:id="@+id/btnChangeSecondHandColor"
-                    android:layout_width="wrap_content"
+                    android:layout_width="@dimen/buttons_width"
                     android:layout_height="wrap_content"
-                    android:text="SECOND HAND COLOR"
+                    android:text="@string/text_second_hand_color"
                     app:layout_constraintBottom_toTopOf="@+id/btnNewFragment"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -56,9 +56,9 @@
 
                 <Button
                     android:id="@+id/btnChangeCircleFrameColor"
-                    android:layout_width="wrap_content"
+                    android:layout_width="@dimen/buttons_width"
                     android:layout_height="wrap_content"
-                    android:text="FRAME COLOR"
+                    android:text="@string/text_frame_color"
                     app:layout_constraintBottom_toTopOf="@+id/btnNewFragment"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

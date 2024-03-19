@@ -22,11 +22,10 @@ class ColorDialog : DialogFragment() {
                 .setNegativeButton("Cancel") { dialog: DialogInterface, _: Int ->
                     dialog.cancel()
                 }
-                .setNegativeButton("Cancel", null)
                 .setSingleChoiceItems(
                     arrayOf("Red", "Green", "Blue", "Yellow", "Black"),
                     getColorIndex(initialColor)
-                ) { _, which ->
+                ) { dialog, which ->
                     initialColor = when (which) {
                         0 -> Color.RED
                         1 -> Color.GREEN
@@ -34,6 +33,8 @@ class ColorDialog : DialogFragment() {
                         3 -> Color.YELLOW
                         else -> Color.BLACK
                     }
+                    colorSelectedListener(initialColor)
+                    dialog.dismiss()
                 }
             builder.create()
         } ?: throw IllegalStateException("Activity cannot be null")

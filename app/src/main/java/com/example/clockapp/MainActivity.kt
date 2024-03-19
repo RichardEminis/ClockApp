@@ -31,10 +31,10 @@ class MainActivity : AppCompatActivity() {
 
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             when (position) {
-                0 -> tab.text = "Moscow"
-                1 -> tab.text = "UTC+5"
-                2 -> tab.text = "GMT-4"
-                3 -> tab.text = "GMT"
+                0 -> tab.text = MOSCOW_TAB
+                1 -> tab.text = UTC_5
+                2 -> tab.text = GMT_4
+                3 -> tab.text = GMT
             }
         }.attach()
     }

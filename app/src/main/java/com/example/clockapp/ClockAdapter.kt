@@ -9,10 +9,10 @@ class ClockAdapter(fragment: FragmentActivity) : FragmentStateAdapter(fragment) 
 
     override fun createFragment(position: Int): Fragment {
         return when (position) {
-            0 -> MainFragment("GMT+3")
-            1 -> MainFragment("GMT+5")
-            2 -> MainFragment("GMT-4")
-            3 -> MainFragment("GMT")
+            0 -> MainFragment(GMT_3)
+            1 -> MainFragment(UTC_5)
+            2 -> MainFragment(GMT_4)
+            3 -> MainFragment(GMT)
             else -> throw IllegalArgumentException("Invalid position: $position")
         }
     }
