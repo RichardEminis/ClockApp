@@ -11,14 +11,10 @@ import androidx.fragment.app.Fragment
 import com.example.clockapp.databinding.FragmentMainBinding
 import java.util.TimeZone
 
-
 class MainFragment() : Fragment() {
 
-    private val binding: FragmentMainBinding by lazy {
-        FragmentMainBinding.inflate(layoutInflater)
-    }
+    private lateinit var binding: FragmentMainBinding
 
-    private lateinit var clockView1: ClockView
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var timeZone: String
 
@@ -26,18 +22,15 @@ class MainFragment() : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val rootView = inflater.inflate(R.layout.fragment_main, container, false)
-
-        clockView1 = rootView.findViewById(R.id.clockView1)
-        timeZone = requireArguments().getString(TIME_ZONE, TimeZone.getDefault().id)
-
-        return rootView
+        binding = FragmentMainBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        clockView1.setTimeZone(timeZone)
+        timeZone = requireArguments().getString(TIME_ZONE, TimeZone.getDefault().id)
+        binding.clockView1.setTimeZone(timeZone)
+        colorChanger()
     }
 
     private fun colorChanger() {
@@ -52,7 +45,7 @@ class MainFragment() : Fragment() {
         binding.btnChangeSecondHandColor.setBackgroundColor(secondHandColor)
         binding.btnChangeCircleFrameColor.setBackgroundColor(circleFrameColor)
 
-        clockView1 = binding.clockView1
+        val clockView1 = binding.clockView1
         clockView1.setCircleMainColor(circleMainColor)
         clockView1.setSecondHandColor(secondHandColor)
         clockView1.setCircleFrameColor(circleFrameColor)
