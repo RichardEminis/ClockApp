@@ -4,12 +4,11 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.graphics.Color
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import com.example.clockapp.databinding.FragmentMainBinding
-import java.util.Calendar
 import java.util.TimeZone
 
 
@@ -21,6 +20,7 @@ class MainFragment() : Fragment() {
 
     private lateinit var clockView1: ClockView
     private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var timeZone: String
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,10 +35,9 @@ class MainFragment() : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        arguments?.getString(TIME_ZONE)?.let { timeZone ->
-            updateTime(timeZone)
-        }
-        colorChanger()
+        timeZone = requireArguments().getString(TIME_ZONE, TimeZone.getDefault().id)
+        clockView1 = binding.clockView1
+        clockView1.setTimeZone(timeZone)
     }
 
     private fun colorChanger() {
@@ -87,15 +86,5 @@ class MainFragment() : Fragment() {
             }
             colorPickerDialog.show(parentFragmentManager, COLOR_PICKER_DIALOG)
         }
-    }
-
-    private fun updateTime(timeZone: String) {
-        val calendar = Calendar.getInstance(TimeZone.getTimeZone(timeZone))
-        val hour = calendar.get(Calendar.HOUR_OF_DAY)
-        val minute = calendar.get(Calendar.MINUTE)
-        val second = calendar.get(Calendar.SECOND)
-
-        clockView1.setTime(hour, minute, second)
-        clockView1.postInvalidateDelayed(SECOND_DELAY)
     }
 }

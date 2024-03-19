@@ -7,6 +7,8 @@ import android.graphics.Paint
 import android.graphics.Typeface
 import android.util.AttributeSet
 import android.view.View
+import java.util.Calendar
+import java.util.TimeZone
 import kotlin.math.cos
 import kotlin.math.sin
 
@@ -33,6 +35,8 @@ class ClockView(context: Context, attributeSet: AttributeSet) : View(context, at
     private var hourHandLength: Float = 0f
     private var minuteHandLength: Float = 0f
     private var secondHandLength: Float = 0f
+
+    private var timeZone: String = TimeZone.getDefault().id
 
     init {
         circleFramePaint.color = Color.DKGRAY
@@ -61,13 +65,6 @@ class ClockView(context: Context, attributeSet: AttributeSet) : View(context, at
         pointsPaint.isAntiAlias = true
     }
 
-    fun setTime(hour: Int, minute: Int, second: Int) {
-        currentHour = hour
-        currentMinute = minute
-        currentSecond = second
-        invalidate()
-    }
-
     fun setCircleMainColor(color: Int) {
         circleMainPaint.color = color
         invalidate()
@@ -80,6 +77,11 @@ class ClockView(context: Context, attributeSet: AttributeSet) : View(context, at
 
     fun setCircleFrameColor(color: Int) {
         circleFramePaint.color = color
+        invalidate()
+    }
+
+    fun setTimeZone(timeZone: String) {
+        this.timeZone = timeZone
         invalidate()
     }
 
@@ -101,10 +103,15 @@ class ClockView(context: Context, attributeSet: AttributeSet) : View(context, at
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
+        val calendar = Calendar.getInstance(TimeZone.getTimeZone(timeZone))
+        val hour = calendar.get(Calendar.HOUR_OF_DAY)
+        val minute = calendar.get(Calendar.MINUTE)
+        val second = calendar.get(Calendar.SECOND)
+
         val hourHandAngle =
-            Math.toRadians((currentHour % HOURS_IN_CLOCK * DEGREES_PER_HOUR + currentMinute / 2).toDouble())
-        val minuteHandAngle = Math.toRadians((currentMinute * DEGREES_PER_MINUTE).toDouble())
-        val secondHandAngle = Math.toRadians((currentSecond * DEGREES_PER_MINUTE).toDouble())
+            Math.toRadians((hour % HOURS_IN_CLOCK * DEGREES_PER_HOUR + minute / 2).toDouble())
+        val minuteHandAngle = Math.toRadians((minute * DEGREES_PER_MINUTE).toDouble())
+        val secondHandAngle = Math.toRadians((second * DEGREES_PER_MINUTE).toDouble())
 
         canvas.drawCircle(centerX, centerY, radius, circleFramePaint)
         canvas.drawCircle(centerX, centerY, radius - radius / FRAME_CIRCLE_RATIO, circleMainPaint)
@@ -153,5 +160,7 @@ class ClockView(context: Context, attributeSet: AttributeSet) : View(context, at
             (centerY - secondHandLength * cos(secondHandAngle)).toFloat(),
             secondHandPaint
         )
+
+        postInvalidateDelayed(1000)
     }
 }
