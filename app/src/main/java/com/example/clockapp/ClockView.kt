@@ -7,11 +7,14 @@ import android.graphics.Paint
 import android.graphics.Typeface
 import android.util.AttributeSet
 import android.view.View
-import java.util.Calendar
 import kotlin.math.cos
 import kotlin.math.sin
 
 class ClockView(context: Context, attributeSet: AttributeSet) : View(context, attributeSet) {
+
+    private var currentHour: Int = 0
+    private var currentMinute: Int = 0
+    private var currentSecond: Int = 0
 
     private val textPaint: Paint = Paint()
     private val circleFramePaint: Paint = Paint()
@@ -30,10 +33,6 @@ class ClockView(context: Context, attributeSet: AttributeSet) : View(context, at
     private var hourHandLength: Float = 0f
     private var minuteHandLength: Float = 0f
     private var secondHandLength: Float = 0f
-
-    private var hourHandAngle: Double = 0.0
-    private var minuteHandAngle: Double = 0.0
-    private var secondHandAngle: Double = 0.0
 
     init {
         circleFramePaint.color = Color.DKGRAY
@@ -62,6 +61,28 @@ class ClockView(context: Context, attributeSet: AttributeSet) : View(context, at
         pointsPaint.isAntiAlias = true
     }
 
+    fun setTime(hour: Int, minute: Int, second: Int) {
+        currentHour = hour
+        currentMinute = minute
+        currentSecond = second
+        invalidate()
+    }
+
+    fun setCircleMainColor(color: Int) {
+        circleMainPaint.color = color
+        invalidate()
+    }
+
+    fun setSecondHandColor(color: Int) {
+        secondHandPaint.color = color
+        invalidate()
+    }
+
+    fun setCircleFrameColor(color: Int) {
+        circleFramePaint.color = color
+        invalidate()
+    }
+
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
 
@@ -80,37 +101,15 @@ class ClockView(context: Context, attributeSet: AttributeSet) : View(context, at
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
-        val calendar = Calendar.getInstance()
-        val hour = calendar.get(Calendar.HOUR_OF_DAY) % 12
-        val minute = calendar.get(Calendar.MINUTE)
-        val second = calendar.get(Calendar.SECOND)
+        val hourHandAngle = Math.toRadians((currentHour % 12 * 30 + currentMinute / 2).toDouble())
+        val minuteHandAngle = Math.toRadians((currentMinute * 6).toDouble())
+        val secondHandAngle = Math.toRadians((currentSecond * 6).toDouble())
 
-        hourHandAngle = Math.toRadians((hour * 30 + minute / 2).toDouble())
-        minuteHandAngle = Math.toRadians((minute * 6).toDouble())
-        secondHandAngle = Math.toRadians((second * 6).toDouble())
+        canvas.drawCircle(centerX, centerY, radius, circleFramePaint)
+        canvas.drawCircle(centerX, centerY, radius - radius / 15, circleMainPaint)
+        canvas.drawCircle(centerX, centerY, radius / 30, circleCenterPaint)
 
-        val radius = width.coerceAtMost(height) / 2
-
-        canvas.drawCircle(
-            (width / 2).toFloat(),
-            (height / 2).toFloat(),
-            radius.toFloat(),
-            circleFramePaint
-        )
-        canvas.drawCircle(
-            (width / 2).toFloat(),
-            (height / 2).toFloat(),
-            radius.toFloat() - radius / 15,
-            circleMainPaint
-        )
-        canvas.drawCircle(
-            (width / 2).toFloat(),
-            (height / 2).toFloat(),
-            radius.toFloat() / 30,
-            circleCenterPaint
-        )
-
-        val radiusOfPoints = width.coerceAtMost(height) / 2.3
+        val radiusOfPoints = radius / 2.3
         val textRadius = radius - (radius / 3)
 
         for (i in 1..12) {
@@ -153,7 +152,5 @@ class ClockView(context: Context, attributeSet: AttributeSet) : View(context, at
             (centerY - secondHandLength * cos(secondHandAngle)).toFloat(),
             secondHandPaint
         )
-
-        postInvalidateDelayed(1000)
     }
 }

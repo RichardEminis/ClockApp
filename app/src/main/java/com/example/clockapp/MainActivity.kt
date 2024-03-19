@@ -3,9 +3,10 @@ package com.example.clockapp
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.add
-import androidx.fragment.app.commit
+import androidx.viewpager2.widget.ViewPager2
 import com.example.clockapp.databinding.ActivityMainBinding
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 
 class MainActivity : AppCompatActivity() {
 
@@ -14,16 +15,27 @@ class MainActivity : AppCompatActivity() {
         get() = _binding
             ?: throw IllegalStateException("Binding for ActivityMainBinding must not be null")
 
-    private val fragmentManager = supportFragmentManager
+    private lateinit var viewPager: ViewPager2
+    private lateinit var tabLayout: TabLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        fragmentManager.commit {
-            setReorderingAllowed(true)
-            add<MainFragment>(R.id.mainContainer)
-        }
+        viewPager = findViewById(R.id.mainContainer)
+        tabLayout = findViewById(R.id.tab_layout)
+
+        val adapter = ClockAdapter(this)
+        viewPager.adapter = adapter
+
+        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+            when (position) {
+                0 -> tab.text = "Moscow"
+                1 -> tab.text = "UTC+5"
+                2 -> tab.text = "GMT-4"
+                3 -> tab.text = "GMT"
+            }
+        }.attach()
     }
 }
