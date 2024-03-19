@@ -14,10 +14,6 @@ import kotlin.math.sin
 
 class ClockView(context: Context, attributeSet: AttributeSet) : View(context, attributeSet) {
 
-    private var currentHour: Int = 0
-    private var currentMinute: Int = 0
-    private var currentSecond: Int = 0
-
     private val textPaint: Paint = Paint()
     private val circleFramePaint: Paint = Paint()
     private val circleMainPaint: Paint = Paint()
