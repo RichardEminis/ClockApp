@@ -1,12 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainFragment">
 
-    <com.example.clockapp.ClockView
-        android:layout_width="200dp"
-        android:layout_height="200dp" />
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        app:layout_constraintBottom_toBottomOf="parent">
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.example.clockapp.ClockView
+                android:id="@+id/clockView1"
+                android:layout_width="@dimen/clock_view_size"
+                android:layout_height="@dimen/clock_view_size"
+                android:layout_marginTop="@dimen/main_indent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/clockView1">
+
+                <Button
+                    android:id="@+id/btnChangeCircleMainColor"
+                    android:layout_width="@dimen/buttons_width"
+                    android:layout_height="wrap_content"
+                    android:text="@string/text_background_color"
+                    app:layout_constraintBottom_toTopOf="@+id/btnNewFragment"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/clockView1"
+                    style="@style/ButtonsStyle"/>
+
+                <Button
+                    android:id="@+id/btnChangeSecondHandColor"
+                    android:layout_width="@dimen/buttons_width"
+                    android:layout_height="wrap_content"
+                    android:text="@string/text_second_hand_color"
+                    app:layout_constraintBottom_toTopOf="@+id/btnNewFragment"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/clockView1"
+                    style="@style/ButtonsStyle"/>
+
+                <Button
+                    android:id="@+id/btnChangeCircleFrameColor"
+                    android:layout_width="@dimen/buttons_width"
+                    android:layout_height="wrap_content"
+                    android:text="@string/text_frame_color"
+                    app:layout_constraintBottom_toTopOf="@+id/btnNewFragment"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/clockView1"
+                    style="@style/ButtonsStyle"/>
+
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
 </FrameLayout>

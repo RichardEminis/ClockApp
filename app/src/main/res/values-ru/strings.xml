@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Часы</string>
+    <string name="text_background_color">цвет фона часов</string>
+    <string name="text_second_hand_color">цвет секундной стрелки</string>
+    <string name="text_frame_color">цвет рамки часов</string>
+</resources>

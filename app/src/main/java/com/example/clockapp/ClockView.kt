@@ -8,6 +8,7 @@ import android.graphics.Typeface
 import android.util.AttributeSet
 import android.view.View
 import java.util.Calendar
+import java.util.TimeZone
 import kotlin.math.cos
 import kotlin.math.sin
 
@@ -31,9 +32,7 @@ class ClockView(context: Context, attributeSet: AttributeSet) : View(context, at
     private var minuteHandLength: Float = 0f
     private var secondHandLength: Float = 0f
 
-    private var hourHandAngle: Double = 0.0
-    private var minuteHandAngle: Double = 0.0
-    private var secondHandAngle: Double = 0.0
+    private var timeZone: String = TimeZone.getDefault().id
 
     init {
         circleFramePaint.color = Color.DKGRAY
@@ -45,77 +44,80 @@ class ClockView(context: Context, attributeSet: AttributeSet) : View(context, at
         textPaint.typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD)
 
         hourHandPaint.color = Color.BLACK
-        hourHandPaint.strokeWidth = 20f
+        hourHandPaint.strokeWidth = HOUR_HAND_WIDTH
         hourHandPaint.strokeCap = Paint.Cap.ROUND
 
         minuteHandPaint.color = Color.MAGENTA
-        minuteHandPaint.strokeWidth = 13f
+        minuteHandPaint.strokeWidth = MINUTE_HAND_WIDTH
         minuteHandPaint.strokeCap = Paint.Cap.ROUND
 
         secondHandPaint.color = Color.RED
-        secondHandPaint.strokeWidth = 8f
+        secondHandPaint.strokeWidth = SECOND_HAND_WIDTH
         secondHandPaint.strokeCap = Paint.Cap.ROUND
 
         pointsPaint.color = Color.BLACK
-        pointsPaint.strokeWidth = 5f
+        pointsPaint.strokeWidth = POINTS_RADIUS_SMALL
         pointsPaint.style = Paint.Style.FILL
         pointsPaint.isAntiAlias = true
+    }
+
+    fun setCircleMainColor(color: Int) {
+        circleMainPaint.color = color
+        invalidate()
+    }
+
+    fun setSecondHandColor(color: Int) {
+        secondHandPaint.color = color
+        invalidate()
+    }
+
+    fun setCircleFrameColor(color: Int) {
+        circleFramePaint.color = color
+        invalidate()
+    }
+
+    fun setTimeZone(timeZone: String) {
+        this.timeZone = timeZone
+        invalidate()
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
 
-        textSize = (w.coerceAtMost(h) / 8).toFloat()
+        textSize = (w.coerceAtMost(h) / TEXT_SIZE_RATIO).toFloat()
         textPaint.textSize = textSize
 
         centerX = w / 2f
         centerY = h / 2f
         radius = w.coerceAtMost(h) / 2.toFloat()
 
-        hourHandLength = radius * 0.5f
-        minuteHandLength = radius * 0.7f
-        secondHandLength = radius * 0.8f
+        hourHandLength = radius * HOUR_HAND_RATIO
+        minuteHandLength = radius * MINUTE_HAND_RATIO
+        secondHandLength = radius * SECOND_HAND_RATIO
     }
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
-        val calendar = Calendar.getInstance()
-        val hour = calendar.get(Calendar.HOUR_OF_DAY) % 12
+        val calendar = Calendar.getInstance(TimeZone.getTimeZone(timeZone))
+        val hour = calendar.get(Calendar.HOUR_OF_DAY)
         val minute = calendar.get(Calendar.MINUTE)
         val second = calendar.get(Calendar.SECOND)
 
-        hourHandAngle = Math.toRadians((hour * 30 + minute / 2).toDouble())
-        minuteHandAngle = Math.toRadians((minute * 6).toDouble())
-        secondHandAngle = Math.toRadians((second * 6).toDouble())
+        val hourHandAngle =
+            Math.toRadians((hour % HOURS_IN_CLOCK * DEGREES_PER_HOUR + minute / 2).toDouble())
+        val minuteHandAngle = Math.toRadians((minute * DEGREES_PER_MINUTE).toDouble())
+        val secondHandAngle = Math.toRadians((second * DEGREES_PER_MINUTE).toDouble())
 
-        val radius = width.coerceAtMost(height) / 2
+        canvas.drawCircle(centerX, centerY, radius, circleFramePaint)
+        canvas.drawCircle(centerX, centerY, radius - radius / FRAME_CIRCLE_RATIO, circleMainPaint)
+        canvas.drawCircle(centerX, centerY, radius / DEGREES_PER_HOUR, circleCenterPaint)
 
+        val radiusOfPoints = radius / POINTS_RADIUS_RATIO
+        val textRadius = radius - (radius / TEXT_RADIUS_RATIO)
 
-        canvas.drawCircle(
-            (width / 2).toFloat(),
-            (height / 2).toFloat(),
-            radius.toFloat(),
-            circleFramePaint
-        )
-        canvas.drawCircle(
-            (width / 2).toFloat(),
-            (height / 2).toFloat(),
-            radius.toFloat() - radius / 15,
-            circleMainPaint
-        )
-        canvas.drawCircle(
-            (width / 2).toFloat(),
-            (height / 2).toFloat(),
-            radius.toFloat() / 30,
-            circleCenterPaint
-        )
-
-        val radiusOfPoints = width.coerceAtMost(height) / 2.3
-        val textRadius = radius - (radius / 3)
-
-        for (i in 1..12) {
-            val angleStep = 2 * Math.PI / 12
+        for (i in 1..HOURS_IN_CLOCK) {
+            val angleStep = 2 * Math.PI / HOURS_IN_CLOCK
             val angle = i * angleStep - Math.PI / 2
             val x = (centerX + textRadius * cos(angle)).toFloat()
             val y = (centerY + textRadius * sin(angle)).toFloat()
@@ -125,14 +127,14 @@ class ClockView(context: Context, attributeSet: AttributeSet) : View(context, at
             canvas.drawText(i.toString(), x, y - textHeight / 2 - textPaint.ascent(), textPaint)
         }
 
-        for (i in 0 until 60) {
-            val angleStep = 2 * Math.PI / 60
+        for (i in 0 until MINUTES_IN_HOUR) {
+            val angleStep = 2 * Math.PI / MINUTES_IN_HOUR
             val angle = i * angleStep
 
             val x = (centerX + radiusOfPoints * cos(angle)).toFloat()
             val y = (centerY + radiusOfPoints * sin(angle)).toFloat()
 
-            val pointRadius = if (i % 5 == 0) 7f else 5f
+            val pointRadius = if (i % 5 == 0) POINTS_RADIUS_LARGE else POINTS_RADIUS_SMALL
             canvas.drawCircle(x, y, pointRadius, pointsPaint)
         }
 
@@ -155,6 +157,6 @@ class ClockView(context: Context, attributeSet: AttributeSet) : View(context, at
             secondHandPaint
         )
 
-        postInvalidateDelayed(1000)
+        postInvalidateDelayed(SECOND_DELAY)
     }
 }

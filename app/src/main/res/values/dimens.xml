@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="clock_view_size">300dp</dimen>
+    <dimen name="main_indent">20dp</dimen>
+    <dimen name="buttons_width">200dp</dimen>
+</resources>
