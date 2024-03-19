@@ -29,14 +29,14 @@ class MainFragment() : Fragment() {
         val rootView = inflater.inflate(R.layout.fragment_main, container, false)
 
         clockView1 = rootView.findViewById(R.id.clockView1)
+        timeZone = requireArguments().getString(TIME_ZONE, TimeZone.getDefault().id)
 
         return rootView
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        timeZone = requireArguments().getString(TIME_ZONE, TimeZone.getDefault().id)
-        clockView1 = binding.clockView1
+
         clockView1.setTimeZone(timeZone)
     }
 

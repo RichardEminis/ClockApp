@@ -161,6 +161,6 @@ class ClockView(context: Context, attributeSet: AttributeSet) : View(context, at
             secondHandPaint
         )
 
-        postInvalidateDelayed(1000)
+        postInvalidateDelayed(SECOND_DELAY)
     }
 }
